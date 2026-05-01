@@ -1,0 +1,52 @@
+<svg width="920" height="620" viewBox="0 0 920 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ScheduleBot usage example</title>
+  <desc id="desc">A Discord-style example showing schedule add, list, and reminder responses.</desc>
+  <rect width="920" height="620" rx="18" fill="#313338"/>
+  <rect x="32" y="32" width="856" height="556" rx="14" fill="#2B2D31"/>
+  <rect x="32" y="32" width="220" height="556" rx="14" fill="#1E1F22"/>
+  <rect x="252" y="32" width="636" height="64" fill="#313338"/>
+  <text x="280" y="73" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700"># 일정</text>
+  <text x="56" y="76" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">ScheduleBot</text>
+  <text x="58" y="124" fill="#949BA4" font-family="Segoe UI, Arial, sans-serif" font-size="15">COMMANDS</text>
+  <rect x="52" y="146" width="176" height="38" rx="8" fill="#35373C"/>
+  <text x="70" y="171" fill="#DBDEE1" font-family="Segoe UI, Arial, sans-serif" font-size="16">/schedule add</text>
+  <text x="70" y="218" fill="#949BA4" font-family="Segoe UI, Arial, sans-serif" font-size="16">/schedule list</text>
+  <text x="70" y="258" fill="#949BA4" font-family="Segoe UI, Arial, sans-serif" font-size="16">/schedule today</text>
+  <text x="70" y="298" fill="#949BA4" font-family="Segoe UI, Arial, sans-serif" font-size="16">/schedule remove</text>
+
+  <g transform="translate(280 126)">
+    <circle cx="24" cy="24" r="24" fill="#5865F2"/>
+    <text x="24" y="31" fill="white" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">U</text>
+    <text x="62" y="18" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">사용자</text>
+    <text x="62" y="44" fill="#DBDEE1" font-family="Consolas, monospace" font-size="15">/schedule add title:회의 date:2026-05-03 time:21:00 reminder_minutes:30 channel:#일정</text>
+  </g>
+
+  <g transform="translate(280 212)">
+    <circle cx="24" cy="24" r="24" fill="#23A559"/>
+    <text x="24" y="31" fill="white" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">S</text>
+    <text x="62" y="18" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">ScheduleBot</text>
+    <rect x="62" y="34" width="502" height="122" rx="8" fill="#232428" stroke="#3F4147"/>
+    <rect x="62" y="34" width="5" height="122" rx="2.5" fill="#23A559"/>
+    <text x="84" y="67" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">일정이 등록됐어요. (#1)</text>
+    <text x="84" y="96" fill="#DBDEE1" font-family="Segoe UI, Arial, sans-serif" font-size="16">제목: 회의</text>
+    <text x="84" y="123" fill="#DBDEE1" font-family="Segoe UI, Arial, sans-serif" font-size="16">시간: 2026. 05. 03. 21:00</text>
+    <text x="84" y="150" fill="#DBDEE1" font-family="Segoe UI, Arial, sans-serif" font-size="16">알림: 30분 전 · 채널: #일정</text>
+  </g>
+
+  <g transform="translate(280 398)">
+    <circle cx="24" cy="24" r="24" fill="#5865F2"/>
+    <text x="24" y="31" fill="white" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">U</text>
+    <text x="62" y="18" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">사용자</text>
+    <text x="62" y="44" fill="#DBDEE1" font-family="Consolas, monospace" font-size="15">/schedule list</text>
+  </g>
+
+  <g transform="translate(280 484)">
+    <circle cx="24" cy="24" r="24" fill="#23A559"/>
+    <text x="24" y="31" fill="white" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle">S</text>
+    <text x="62" y="18" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">ScheduleBot</text>
+    <rect x="62" y="34" width="502" height="76" rx="8" fill="#232428" stroke="#3F4147"/>
+    <rect x="62" y="34" width="5" height="76" rx="2.5" fill="#F0B232"/>
+    <text x="84" y="67" fill="#F2F3F5" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="700">#1 회의</text>
+    <text x="84" y="96" fill="#DBDEE1" font-family="Segoe UI, Arial, sans-serif" font-size="16">2026. 05. 03. 21:00 / #일정</text>
+  </g>
+</svg>

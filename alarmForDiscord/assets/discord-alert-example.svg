@@ -1,0 +1,20 @@
+<svg width="920" height="520" viewBox="0 0 920 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Discord webhook alert example</title>
+  <desc id="desc">A sample Discord message showing a Naver Cafe new article alert.</desc>
+  <rect width="920" height="520" rx="0" fill="#313338"/>
+  <rect x="54" y="48" width="812" height="424" rx="8" fill="#2B2D31"/>
+  <rect x="86" y="82" width="56" height="56" rx="18" fill="#03C75A"/>
+  <path d="M114 97C104.6 97 97 104.6 97 114C97 123.4 104.6 131 114 131C123.4 131 131 123.4 131 114C131 104.6 123.4 97 114 97ZM114 103.7C119.7 103.7 124.3 108.3 124.3 114C124.3 119.7 119.7 124.3 114 124.3C108.3 124.3 103.7 119.7 103.7 114C103.7 108.3 108.3 103.7 114 103.7Z" fill="white"/>
+  <text x="162" y="104" fill="#F2F3F5" font-family="Arial, sans-serif" font-size="22" font-weight="700">alarmForDiscord</text>
+  <text x="344" y="104" fill="#949BA4" font-family="Arial, sans-serif" font-size="15">BOT</text>
+  <text x="382" y="104" fill="#949BA4" font-family="Arial, sans-serif" font-size="15">Today at 09:41</text>
+  <rect x="162" y="132" width="626" height="224" rx="6" fill="#232428"/>
+  <rect x="162" y="132" width="5" height="224" rx="2.5" fill="#03C75A"/>
+  <text x="190" y="174" fill="#03C75A" font-family="Arial, sans-serif" font-size="16" font-weight="700">Naver Cafe</text>
+  <text x="190" y="213" fill="#F2F3F5" font-family="Arial, sans-serif" font-size="26" font-weight="700">[공지] 새 글이 등록되었습니다</text>
+  <text x="190" y="254" fill="#DBDEE1" font-family="Arial, sans-serif" font-size="18">네이버 카페에 새 글이 올라왔습니다.</text>
+  <text x="190" y="292" fill="#949BA4" font-family="Arial, sans-serif" font-size="16">https://cafe.naver.com/f-e/cafes/31654901/articles/123</text>
+  <text x="190" y="328" fill="#949BA4" font-family="Arial, sans-serif" font-size="14">중복 알림 방지를 위해 본 글 ID는 seen-articles.json에 저장됩니다.</text>
+  <rect x="162" y="386" width="258" height="42" rx="6" fill="#5865F2"/>
+  <text x="190" y="413" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="700">Open article in Naver Cafe</text>
+</svg>
