@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-const requiredEnv = ["DISCORD_TOKEN", "DISCORD_CLIENT_ID", "DISCORD_GUILD_ID"] as const;
+const requiredEnv = ["DISCORD_TOKEN", "DISCORD_CLIENT_ID"] as const;
 
 function getRequiredEnv(key: (typeof requiredEnv)[number]) {
   const value = process.env[key];
@@ -15,5 +15,5 @@ function getRequiredEnv(key: (typeof requiredEnv)[number]) {
 export const env = {
   discordToken: getRequiredEnv("DISCORD_TOKEN"),
   discordClientId: getRequiredEnv("DISCORD_CLIENT_ID"),
-  discordGuildId: getRequiredEnv("DISCORD_GUILD_ID")
+  discordGuildId: process.env.DISCORD_GUILD_ID
 };

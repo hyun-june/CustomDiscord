@@ -34,7 +34,6 @@ npm.cmd install
 ```env
 DISCORD_TOKEN=your_bot_token_here
 DISCORD_CLIENT_ID=your_application_client_id_here
-DISCORD_GUILD_ID=your_test_server_id_here
 ```
 
 각 값의 의미는 다음과 같습니다.
@@ -43,20 +42,21 @@ DISCORD_GUILD_ID=your_test_server_id_here
 | --- | --- |
 | `DISCORD_TOKEN` | Discord Developer Portal의 봇 토큰 |
 | `DISCORD_CLIENT_ID` | 애플리케이션 ID |
-| `DISCORD_GUILD_ID` | 슬래시 명령어를 등록할 테스트 서버 ID |
 
 ## 명령어 등록
 
-Discord 서버에 슬래시 명령어를 등록합니다.
+봇이 초대된 모든 서버에서 사용할 수 있도록 전역 슬래시 명령어를 등록합니다.
 
 ```bash
 npm.cmd run deploy:commands
 ```
 
+전역 명령어는 Discord에 반영되기까지 시간이 걸릴 수 있습니다. 보통 몇 분 안에 보이지만, 경우에 따라 더 오래 걸릴 수 있습니다.
+
 정상 등록되면 다음과 비슷한 로그가 나옵니다.
 
 ```text
-[info] Registered 4 guild slash commands.
+[info] Registered 4 global slash commands.
 ```
 
 ## 실행
