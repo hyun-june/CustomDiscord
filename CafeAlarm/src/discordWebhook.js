@@ -1,27 +1,17 @@
-const webhookUrl =
-  "https://discord.com/api/webhooks/1499411607070048480/1Xe36C-BUchN_oaOlrSTjxIdAVCVUb7LEwVoPsXmfdMOuj-3hK_-2CwDM03xx5ybn4yk";
-
-const article = {
-  title: "테스트 제목",
-  url: "https://www.naver.com",
-  description: "내용",
-  color: 0x03c75a,
-  timestamp: new Date().toISOString(),
-};
-
-export const sendDiscordWebhook = async () => {
+export const sendDiscordWebhook = async (article) => {
   const payload = {
     embeds: [
       {
-        title: article.title,
+        title: article.subject,
         url: article.url,
-        description: article.description,
+        description: article.summary,
         color: 0x03c75a,
-        timestamp: new Date().toISOString(),
+        timestamp: new Date(article.writeDateTimestamp).toISOString(),
       },
     ],
   };
-  const response = await fetch(webhookUrl, {
+
+  const response = await fetch(process.env.DISCORD_WEBHOOK_URL, {
     method: "POST",
     headers: {
       "content-type": "application/json",

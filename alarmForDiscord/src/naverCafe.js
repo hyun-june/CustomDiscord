@@ -162,6 +162,7 @@ export async function fetchCafeArticlesFromApi({
   const apiUrl = new URL(
     `${BOARD_API_BASE_URL}/v1/cafes/${boardInfo.cafeId}/menus/${boardInfo.menuId}/articles`,
   );
+
   apiUrl.searchParams.set("boardType", "L");
   apiUrl.searchParams.set("page", "1");
   apiUrl.searchParams.set("pageSize", String(maxArticles));

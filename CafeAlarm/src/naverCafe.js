@@ -1,9 +1,12 @@
+const buildArticleUrl = (cafeId, articleId) => {
+  return `https://cafe.naver.com/f-e/cafes/${cafeId}/articles/${articleId}`;
+};
+
 export const getCafeData = async () => {
   try {
-    const response = await fetch(
-      "https://apis.naver.com/cafe-web/cafe-boardlist-api/v1/cafes/31719263/menus/0/articles?page=1&pageSize=15&sortBy=TIME&viewType=L",
-    );
+    const response = await fetch(process.env.NAVER_CAFE_URL);
     const data = await response.json();
+
     const articles = data.result.articleList.map((article) => {
       const {
         articleId,
@@ -21,9 +24,13 @@ export const getCafeData = async () => {
         subject,
         writeDateTimestamp,
         summary,
+        url: buildArticleUrl(cafeId, articleId),
       };
     });
+
+    return articles;
   } catch (error) {
     console.error(error);
+    return [];
   }
 };
