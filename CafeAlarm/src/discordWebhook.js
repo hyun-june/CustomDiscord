@@ -1,4 +1,4 @@
-export const sendDiscordWebhook = async (article) => {
+export const sendDiscordWebhook = async (discordWebhookUrl, article) => {
   const payload = {
     embeds: [
       {
@@ -11,7 +11,7 @@ export const sendDiscordWebhook = async (article) => {
     ],
   };
 
-  const response = await fetch(process.env.DISCORD_WEBHOOK_URL, {
+  const response = await fetch(discordWebhookUrl, {
     method: "POST",
     headers: {
       "content-type": "application/json",

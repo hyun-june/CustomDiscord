@@ -2,10 +2,20 @@ const buildArticleUrl = (cafeId, articleId) => {
   return `https://cafe.naver.com/f-e/cafes/${cafeId}/articles/${articleId}`;
 };
 
-export const getCafeData = async () => {
+export const getCafeData = async (naverCafeUrl) => {
   try {
-    const response = await fetch(process.env.NAVER_CAFE_URL);
+    const response = await fetch(naverCafeUrl);
+
+    if (!response.ok) {
+      throw new Error(
+        `Naver Cafe request failed: ${response.status} ${response.statusText}`,
+      );
+    }
     const data = await response.json();
+
+    if (!Array.isArray(data?.result?.articleList)) {
+      throw new Error("Naver Cafe response does not include articleList.");
+    }
 
     const articles = data.result.articleList.map((article) => {
       const {
@@ -31,6 +41,6 @@ export const getCafeData = async () => {
     return articles;
   } catch (error) {
     console.error(error);
-    return [];
+    throw error;
   }
 };
