@@ -1,12 +1,17 @@
 name: CafeAlarm Test
 
 on:
+  workflow_dispatch:
+
   push:
-    paths: -"CafeAlarm/**"
-      -"./github/workflows/cafeAlarmTest.yml"
+    paths:
+      - "CafeAlarm/**"
+      - ".github/workflows/cafeAlarmTest.yml"
+
   pull_request:
-    paths: -"CafeAlarm/**"
-      -"./github/workflows/cafeAlarmTest.yml"
+    paths:
+      - "CafeAlarm/**"
+      - ".github/workflows/cafeAlarmTest.yml"
 
 permissions:
   contents: read
