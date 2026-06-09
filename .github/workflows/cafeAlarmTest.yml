@@ -1,16 +1,22 @@
-name: Test
+name: CafeAlarm Test
 
 on:
   push:
+    paths: -"CafeAlarm/**"
+      -"./github/workflows/cafeAlarmTest.yml"
   pull_request:
+    paths: -"CafeAlarm/**"
+      -"./github/workflows/cafeAlarmTest.yml"
 
-permissions:
-  contents: read
+permissions: contents:read
 
 jobs:
   test:
-    name: Node.js tests
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: CafeAlarm
 
     steps:
       - name: Check out repository
@@ -21,6 +27,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: CafeAlarm/package-lock.json
 
       - name: Install dependencies
         run: npm ci
