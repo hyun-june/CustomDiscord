@@ -1,0 +1,15 @@
+{
+  "name": "cafe-for-discord",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Watch a Naver Cafe article list and send new post alerts to Discord.",
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "debug:naver": "node src/debugNaverCafe.js",
+    "test": "node tests/naverCafe.test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
