@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   removeWatcherFromList,
   replaceWatcherInList,
+  syncWatcherSelection,
 } from "../app/utils/watcherList.ts";
 import type { Watcher } from "../app/types/watcher.ts";
 
@@ -50,4 +51,22 @@ test("replaces a watcher and keeps the selected watcher in sync", () => {
 
   assert.deepEqual(result.watchers, [paused]);
   assert.equal(result.selectedWatcher, paused);
+});
+
+test("syncs the selected watcher with refreshed watcher data", () => {
+  const selected = createWatcher("selected");
+  const refreshed = {
+    ...selected,
+    status: "healthy" as const,
+    statusLabel: "정상",
+  };
+
+  assert.equal(syncWatcherSelection([refreshed], selected), refreshed);
+});
+
+test("selects the first watcher when the selected watcher no longer exists", () => {
+  const selected = createWatcher("selected");
+  const remaining = createWatcher("remaining");
+
+  assert.equal(syncWatcherSelection([remaining], selected), remaining);
 });

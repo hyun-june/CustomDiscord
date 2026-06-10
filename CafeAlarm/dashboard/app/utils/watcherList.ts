@@ -29,3 +29,11 @@ export const replaceWatcherInList = (
   selectedWatcher:
     selectedWatcher?.id === updatedWatcher.id ? updatedWatcher : selectedWatcher,
 });
+
+export const syncWatcherSelection = (
+  watchers: Watcher[],
+  selectedWatcher: Watcher | null,
+) =>
+  watchers.find((watcher) => watcher.id === selectedWatcher?.id) ??
+  watchers[0] ??
+  null;

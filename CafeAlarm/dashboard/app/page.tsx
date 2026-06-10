@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { Topbar } from "./components/Topbar";
 import { WatcherDetail } from "./components/WatcherDetail";
@@ -10,7 +10,10 @@ import { mapWatcher } from "./mappers/watchMapper";
 import {
   removeWatcherFromList,
   replaceWatcherInList,
+  syncWatcherSelection,
 } from "./utils/watcherList";
+
+const WATCHER_REFRESH_INTERVAL_MS = 30_000;
 
 export default function Home() {
   const [selectedWatcher, setSelectedWatcher] = useState<Watcher | null>(null);
@@ -21,29 +24,44 @@ export default function Home() {
     null,
   );
 
-  useEffect(() => {
-    const loadWatchers = async () => {
-      try {
-        const response = await fetch("/api/watchers");
+  const loadWatchers = useCallback(async () => {
+    try {
+      const response = await fetch("/api/watchers");
 
-        if (!response.ok) {
-          throw new Error("감시 대상 조회에 실패했습니다.");
-        }
-
-        const data: ApiWatcher[] = await response.json();
-        const mappedWatchers = data.map(mapWatcher);
-
-        setWatcherList(mappedWatchers);
-        setSelectedWatcher(mappedWatchers[0] ?? null);
-        setLoadError("");
-      } catch (error) {
-        console.error(error);
-        setLoadError("감시 대상 목록을 불러오지 못했습니다.");
+      if (!response.ok) {
+        throw new Error("감시 대상 조회에 실패했습니다.");
       }
-    };
 
-    loadWatchers();
+      const data: ApiWatcher[] = await response.json();
+      const mappedWatchers = data.map(mapWatcher);
+
+      setWatcherList(mappedWatchers);
+      setSelectedWatcher((previous) =>
+        syncWatcherSelection(mappedWatchers, previous),
+      );
+      setLoadError("");
+    } catch (error) {
+      console.error(error);
+      setLoadError("감시 대상 목록을 불러오지 못했습니다.");
+    }
   }, []);
+
+  useEffect(() => {
+    const initialLoadId = window.setTimeout(() => {
+      void loadWatchers();
+    }, 0);
+
+    const intervalId = window.setInterval(() => {
+      if (document.visibilityState === "visible") {
+        void loadWatchers();
+      }
+    }, WATCHER_REFRESH_INTERVAL_MS);
+
+    return () => {
+      window.clearTimeout(initialLoadId);
+      window.clearInterval(intervalId);
+    };
+  }, [loadWatchers]);
 
   const handleSelectWatcher = (watcher: Watcher) => {
     setSelectedWatcher(watcher);
