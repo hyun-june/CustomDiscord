@@ -7,13 +7,19 @@ import { WatcherList } from "./components/WatcherList";
 import { WatcherCreateForm } from "./components/WatcherCreateForm";
 import type { ApiWatcher, CreateWatcherInput, Watcher } from "./types/watcher";
 import { mapWatcher } from "./mappers/watchMapper";
-import { removeWatcherFromList } from "./utils/watcherList";
+import {
+  removeWatcherFromList,
+  replaceWatcherInList,
+} from "./utils/watcherList";
 
 export default function Home() {
   const [selectedWatcher, setSelectedWatcher] = useState<Watcher | null>(null);
   const [panelMode, setPanelMode] = useState("detail");
   const [watcherList, setWatcherList] = useState<Watcher[]>([]);
   const [loadError, setLoadError] = useState("");
+  const [updatingWatcherId, setUpdatingWatcherId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     const loadWatchers = async () => {
@@ -69,7 +75,11 @@ export default function Home() {
   };
 
   const handleDeleteWatcher = async (watcher: Watcher) => {
-    if (!window.confirm(`"${watcher.name}" 감시 대상을 삭제하시겠습니까?`)) {
+    if (
+      !window.confirm(
+        `"${watcher.name}" 감시 대상과 저장된 게시글 기록을 모두 삭제하시겠습니까?`,
+      )
+    ) {
       return;
     }
 
@@ -91,6 +101,56 @@ export default function Home() {
 
     setWatcherList(nextState.watchers);
     setSelectedWatcher(nextState.selectedWatcher);
+  };
+
+  const handleToggleWatcher = async (watcher: Watcher) => {
+    const enabled = !watcher.enabled;
+
+    if (
+      enabled &&
+      !window.confirm(
+        `"${watcher.name}" 감시를 재개하시겠습니까? 현재 게시글을 새 기준으로 저장하고 이후 글부터 알림을 보냅니다.`,
+      )
+    ) {
+      return;
+    }
+
+    setUpdatingWatcherId(watcher.id);
+
+    try {
+      const response = await fetch(`/api/watchers/${watcher.id}`, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ enabled }),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        throw new Error(
+          errorBody?.message ?? "감시 대상 상태 변경에 실패했습니다.",
+        );
+      }
+
+      const updatedWatcher = mapWatcher(await response.json());
+      const nextState = replaceWatcherInList(
+        watcherList,
+        selectedWatcher,
+        updatedWatcher,
+      );
+
+      setWatcherList(nextState.watchers);
+      setSelectedWatcher(nextState.selectedWatcher);
+    } catch (error) {
+      window.alert(
+        error instanceof Error
+          ? error.message
+          : "감시 대상 상태 변경에 실패했습니다.",
+      );
+    } finally {
+      setUpdatingWatcherId(null);
+    }
   };
 
   return (
@@ -115,7 +175,11 @@ export default function Home() {
             </div>
           </aside>
         ) : (
-          <WatcherDetail watcher={selectedWatcher} />
+          <WatcherDetail
+            isUpdating={updatingWatcherId === selectedWatcher?.id}
+            onToggleWatcher={handleToggleWatcher}
+            watcher={selectedWatcher}
+          />
         )}
 
         {panelMode === "create" && (

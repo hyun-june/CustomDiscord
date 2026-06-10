@@ -6,8 +6,7 @@
   "description": "Watch a Naver Cafe article list and send new post alerts to Discord.",
   "scripts": {
     "start": "node --env-file=.env src/index.js",
-    "debug:naver": "node src/debugNaverCafe.js",
-    "test": "node tests/naverCafe.test.js"
+    "test": "node --test tests/*.test.js"
   },
   "engines": {
     "node": ">=18.0.0"

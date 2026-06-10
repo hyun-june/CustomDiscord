@@ -1,5 +1,5 @@
-import { statusLabels } from "../constants/watcherStatus";
-import type { ApiWatcher, Watcher } from "../types/watcher";
+import { statusLabels } from "../constants/watcherStatus.ts";
+import type { ApiWatcher, Watcher } from "../types/watcher.ts";
 
 export const mapWatcher = (watcher: ApiWatcher): Watcher => ({
   id: watcher._id,
@@ -13,4 +13,5 @@ export const mapWatcher = (watcher: ApiWatcher): Watcher => ({
   naverCafeUrl: watcher.naverCafeUrl,
   discordWebhookConfigured: watcher.discordWebhookConfigured,
   discordWebhookMasked: watcher.discordWebhookMasked,
+  enabled: watcher.enabled,
 });

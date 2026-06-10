@@ -12,6 +12,7 @@ export type Watcher = {
   naverCafeUrl: string;
   discordWebhookConfigured: boolean;
   discordWebhookMasked: string;
+  enabled: boolean;
 };
 
 export type CreateWatcherInput = {
@@ -30,4 +31,5 @@ export type ApiWatcher = {
   naverCafeUrl: string;
   discordWebhookConfigured: boolean;
   discordWebhookMasked: string;
+  enabled: boolean;
 };

@@ -17,3 +17,15 @@ export const removeWatcherFromList = (
         : selectedWatcher,
   };
 };
+
+export const replaceWatcherInList = (
+  watchers: Watcher[],
+  selectedWatcher: Watcher | null,
+  updatedWatcher: Watcher,
+) => ({
+  watchers: watchers.map((watcher) =>
+    watcher.id === updatedWatcher.id ? updatedWatcher : watcher,
+  ),
+  selectedWatcher:
+    selectedWatcher?.id === updatedWatcher.id ? updatedWatcher : selectedWatcher,
+});

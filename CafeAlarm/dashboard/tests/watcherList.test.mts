@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { removeWatcherFromList } from "../app/utils/watcherList.ts";
+import {
+  removeWatcherFromList,
+  replaceWatcherInList,
+} from "../app/utils/watcherList.ts";
 import type { Watcher } from "../app/types/watcher.ts";
 
 const createWatcher = (id: string): Watcher => ({
@@ -15,6 +18,7 @@ const createWatcher = (id: string): Watcher => ({
   naverCafeUrl: "",
   discordWebhookConfigured: true,
   discordWebhookMasked: "",
+  enabled: true,
 });
 
 test("selects the first remaining watcher when the selected watcher is deleted", () => {
@@ -35,4 +39,14 @@ test("keeps the current selection when another watcher is deleted", () => {
 
   assert.deepEqual(result.watchers, [selected]);
   assert.equal(result.selectedWatcher, selected);
+});
+
+test("replaces a watcher and keeps the selected watcher in sync", () => {
+  const selected = createWatcher("selected");
+  const paused = { ...selected, enabled: false, status: "paused" as const };
+
+  const result = replaceWatcherInList([selected], selected, paused);
+
+  assert.deepEqual(result.watchers, [paused]);
+  assert.equal(result.selectedWatcher, paused);
 });

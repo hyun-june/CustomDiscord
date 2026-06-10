@@ -609,6 +609,15 @@ body {
   padding: 0;
 }
 
+.toggle-button-paused {
+  color: #929a95;
+}
+
+.toggle-button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
 .detail-section {
   border-bottom: 1px solid var(--border);
   padding: 20px 0;

@@ -8,6 +8,7 @@ import {
   Settings,
   SlidersHorizontal,
   TestTubeDiagonal,
+  ToggleLeft,
   ToggleRight,
   Wifi,
 } from "lucide-react";
@@ -18,7 +19,15 @@ import {
 import type { Watcher } from "../types/watcher";
 import { DetailRow } from "./DetailRow";
 
-export function WatcherDetail({ watcher }: { watcher: Watcher | null }) {
+export function WatcherDetail({
+  watcher,
+  onToggleWatcher,
+  isUpdating = false,
+}: {
+  watcher: Watcher | null;
+  onToggleWatcher: (watcher: Watcher) => Promise<void>;
+  isUpdating?: boolean;
+}) {
   if (!watcher) {
     return (
       <aside className="detail-panel detail-empty-state">
@@ -61,16 +70,24 @@ export function WatcherDetail({ watcher }: { watcher: Watcher | null }) {
         <div>
           <p className="enabled-title">감시 활성화</p>
           <p className="enabled-description">
-            Worker가 이 카페를 주기적으로 확인합니다.
+            {watcher.enabled
+              ? "Worker가 이 카페를 주기적으로 확인합니다."
+              : "감시가 일시 중단되어 새 글을 확인하지 않습니다."}
           </p>
         </div>
         <button
-          aria-label="감시 활성화됨"
-          className="toggle-button"
-          title="감시 활성화"
+          aria-label={watcher.enabled ? "감시 일시 중단" : "감시 재개"}
+          className={`toggle-button ${watcher.enabled ? "" : "toggle-button-paused"}`}
+          disabled={isUpdating}
+          onClick={() => void onToggleWatcher(watcher)}
+          title={watcher.enabled ? "감시 일시 중단" : "감시 재개"}
           type="button"
         >
-          <ToggleRight aria-hidden="true" size={34} strokeWidth={1.7} />
+          {watcher.enabled ? (
+            <ToggleRight aria-hidden="true" size={34} strokeWidth={1.7} />
+          ) : (
+            <ToggleLeft aria-hidden="true" size={34} strokeWidth={1.7} />
+          )}
         </button>
       </div>
 

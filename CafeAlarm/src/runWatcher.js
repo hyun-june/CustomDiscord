@@ -4,7 +4,6 @@ import { getSeenArticleIds, saveSeenArticles } from "./seenArticleStore.js";
 import { decryptWebhookUrl } from "./webhookCrypto.js";
 
 export const runWatcher = async (watcher) => {
-  console.log(`${watcher.name} 감시 시작`);
   const articles = await fetchCafeData(watcher.naverCafeUrl);
   const seenArticleIds = await getSeenArticleIds(watcher._id);
 
@@ -17,11 +16,8 @@ export const runWatcher = async (watcher) => {
   );
   if (seenArticleIds.size === 0) {
     await saveSeenArticles(watcher._id, articles);
-    console.log(`${watcher.name}: 기존 게시글 ${articles.length}개 저장`);
     return;
   }
-
-  console.log(`${watcher.name}: 새 게시글 ${newArticles.length}개 발견`);
 
   if (newArticles.length > 0) {
     const webhookUrl = decryptWebhookUrl({
