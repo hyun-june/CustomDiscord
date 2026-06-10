@@ -137,7 +137,7 @@ export function WatcherCreateForm({
               label="네이버 카페 URL"
               name="naverCafeUrl"
               onChange={handleChange}
-              placeholder="https://apis.naver.com/..."
+              placeholder="https://cafe.naver.com/f-e/cafes/.../menus/..."
               type="url"
               value={form.naverCafeUrl}
             />

@@ -3,6 +3,10 @@ import {
   encryptWebhookUrl,
   WebhookEncryptionConfigError,
 } from "@/lib/webhookCrypto";
+import {
+  NaverCafeUrlError,
+  normalizeNaverCafeUrl,
+} from "@/lib/naverCafeUrl";
 import { WatcherModel } from "@/models/Watcher";
 import { NextResponse } from "next/server";
 
@@ -72,11 +76,12 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
+    const naverCafeUrl = normalizeNaverCafeUrl(body.naverCafeUrl);
     const encryptedWebhook = encryptWebhookUrl(body.discordWebhookUrl.trim());
 
     const watcher = await WatcherModel.create({
       name: body.name.trim(),
-      naverCafeUrl: body.naverCafeUrl.trim(),
+      naverCafeUrl,
       discordWebhookCiphertext: encryptedWebhook.ciphertext,
       discordWebhookIv: encryptedWebhook.iv,
       discordWebhookAuthTag: encryptedWebhook.authTag,
@@ -93,6 +98,13 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { message: "서버의 웹훅 암호화 키 설정이 올바르지 않습니다." },
         { status: 500 },
+      );
+    }
+
+    if (error instanceof NaverCafeUrlError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: 400 },
       );
     }
 

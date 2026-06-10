@@ -28,6 +28,7 @@ export function WatcherDetail({
   onToggleWatcher: (watcher: Watcher) => Promise<void>;
   isUpdating?: boolean;
 }) {
+  console.log("🚀 ~ WatcherDetail ~ watcher:", watcher);
   if (!watcher) {
     return (
       <aside className="detail-panel detail-empty-state">

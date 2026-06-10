@@ -11,6 +11,7 @@
 
 ```txt
 Dashboard에서 감시 대상 생성
+-> 일반 네이버 카페 메뉴 URL을 JSON API URL로 변환
 -> Discord 웹훅 URL 암호화 후 watchers 컬렉션에 저장
 -> Worker가 10초마다 실행 시점이 된 감시 대상을 조회
 -> 네이버 카페 게시글 조회
