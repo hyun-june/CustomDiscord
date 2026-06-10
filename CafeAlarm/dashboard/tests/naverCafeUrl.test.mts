@@ -9,18 +9,29 @@ test("converts a Naver Cafe menu URL into the article list API URL", () => {
 
   assert.equal(
     result,
-    "https://apis.naver.com/cafe-web/cafe2/ArticleListV2.json?search.clubid=31654901&search.menuid=14&search.page=1&search.perPage=15",
+    "https://apis.naver.com/cafe-web/cafe-boardlist-api/v1/cafes/31654901/menus/14/articles?page=1&pageSize=15&sortBy=TIME&viewType=L",
   );
 });
 
-test("accepts and normalizes an existing article list API URL", () => {
+test("accepts and normalizes an existing board list API URL", () => {
+  const result = normalizeNaverCafeUrl(
+    "https://apis.naver.com/cafe-web/cafe-boardlist-api/v1/cafes/31654901/menus/14/articles?page=3&pageSize=30&sortBy=TIME&viewType=L",
+  );
+
+  assert.equal(
+    result,
+    "https://apis.naver.com/cafe-web/cafe-boardlist-api/v1/cafes/31654901/menus/14/articles?page=1&pageSize=30&sortBy=TIME&viewType=L",
+  );
+});
+
+test("converts a legacy ArticleListV2 API URL into the board list API URL", () => {
   const result = normalizeNaverCafeUrl(
     "https://apis.naver.com/cafe-web/cafe2/ArticleListV2.json?search.menuid=14&search.clubid=31654901&search.perPage=30",
   );
 
   assert.equal(
     result,
-    "https://apis.naver.com/cafe-web/cafe2/ArticleListV2.json?search.clubid=31654901&search.menuid=14&search.page=1&search.perPage=30",
+    "https://apis.naver.com/cafe-web/cafe-boardlist-api/v1/cafes/31654901/menus/14/articles?page=1&pageSize=30&sortBy=TIME&viewType=L",
   );
 });
 

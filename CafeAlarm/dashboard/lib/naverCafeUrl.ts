@@ -1,5 +1,5 @@
-const ARTICLE_LIST_API_URL =
-  "https://apis.naver.com/cafe-web/cafe2/ArticleListV2.json";
+const BOARD_LIST_API_PREFIX =
+  "https://apis.naver.com/cafe-web/cafe-boardlist-api/v1";
 
 export class NaverCafeUrlError extends Error {
   constructor() {
@@ -8,16 +8,18 @@ export class NaverCafeUrlError extends Error {
   }
 }
 
-const buildArticleListApiUrl = (
+const buildBoardListApiUrl = (
   cafeId: string,
   menuId: string,
-  perPage = "15",
+  pageSize = "15",
 ) => {
-  const apiUrl = new URL(ARTICLE_LIST_API_URL);
-  apiUrl.searchParams.set("search.clubid", cafeId);
-  apiUrl.searchParams.set("search.menuid", menuId);
-  apiUrl.searchParams.set("search.page", "1");
-  apiUrl.searchParams.set("search.perPage", perPage);
+  const apiUrl = new URL(
+    `${BOARD_LIST_API_PREFIX}/cafes/${cafeId}/menus/${menuId}/articles`,
+  );
+  apiUrl.searchParams.set("page", "1");
+  apiUrl.searchParams.set("pageSize", pageSize);
+  apiUrl.searchParams.set("sortBy", "TIME");
+  apiUrl.searchParams.set("viewType", "L");
   return apiUrl.toString();
 };
 
@@ -39,7 +41,21 @@ export const normalizeNaverCafeUrl = (input: string) => {
     const perPage = url.searchParams.get("search.perPage") ?? "15";
 
     if (cafeId && menuId) {
-      return buildArticleListApiUrl(cafeId, menuId, perPage);
+      return buildBoardListApiUrl(cafeId, menuId, perPage);
+    }
+  }
+
+  if (url.hostname === "apis.naver.com") {
+    const match = url.pathname.match(
+      /^\/cafe-web\/cafe-boardlist-api\/v1\/cafes\/(\d+)\/menus\/(\d+)\/articles\/?$/,
+    );
+
+    if (match) {
+      return buildBoardListApiUrl(
+        match[1],
+        match[2],
+        url.searchParams.get("pageSize") ?? "15",
+      );
     }
   }
 
@@ -47,7 +63,7 @@ export const normalizeNaverCafeUrl = (input: string) => {
     const match = url.pathname.match(/^\/f-e\/cafes\/(\d+)\/menus\/(\d+)\/?$/);
 
     if (match) {
-      return buildArticleListApiUrl(match[1], match[2]);
+      return buildBoardListApiUrl(match[1], match[2]);
     }
   }
 
