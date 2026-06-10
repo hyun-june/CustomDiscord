@@ -13,6 +13,7 @@ export type Watcher = {
   discordWebhookConfigured: boolean;
   discordWebhookMasked: string;
   enabled: boolean;
+  lastError: string | null;
 };
 
 export type CreateWatcherInput = {
@@ -32,4 +33,5 @@ export type ApiWatcher = {
   discordWebhookConfigured: boolean;
   discordWebhookMasked: string;
   enabled: boolean;
+  lastError: string | null;
 };

@@ -8,10 +8,13 @@ export const mapWatcher = (watcher: ApiWatcher): Watcher => ({
   status: watcher.status,
   statusLabel: statusLabels[watcher.status],
   lastChecked: watcher.lastCheckedAt ?? "아직 확인하지 않음",
-  recentActivity: "감시 준비 중",
+  recentActivity:
+    watcher.lastError ??
+    (watcher.enabled ? "최근 실행 정상" : "감시 일시 중단"),
   pollIntervalSeconds: watcher.pollIntervalSeconds,
   naverCafeUrl: watcher.naverCafeUrl,
   discordWebhookConfigured: watcher.discordWebhookConfigured,
   discordWebhookMasked: watcher.discordWebhookMasked,
   enabled: watcher.enabled,
+  lastError: watcher.lastError,
 });

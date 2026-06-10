@@ -1,10 +1,4 @@
-import {
-  ChevronRight,
-  ListFilter,
-  Plus,
-  Search,
-  Trash2,
-} from "lucide-react";
+import { ChevronRight, ListFilter, Plus, Search, Trash2 } from "lucide-react";
 import {
   statusBadgeClasses,
   statusDotClasses,
@@ -110,13 +104,10 @@ function WatcherRow({
   onSelectWatcher: (watcher: Watcher) => void;
   onDeleteWatcher: (watcher: Watcher) => Promise<void>;
 }) {
-  const activityClass =
-    watcher.status === "error" ? "text-rose-600" : "";
+  const activityClass = watcher.status === "error" ? "text-rose-600" : "";
 
   return (
-    <div
-      className={`watcher-row ${isSelected ? "watcher-row-selected" : ""}`}
-    >
+    <div className={`watcher-row ${isSelected ? "watcher-row-selected" : ""}`}>
       <button
         className="watcher-select-button"
         onClick={() => onSelectWatcher(watcher)}
@@ -139,7 +130,11 @@ function WatcherRow({
             <span className={activityClass}>{watcher.recentActivity}</span>
           </span>
         </span>
-        <ChevronRight aria-hidden="true" className="watcher-chevron" size={17} />
+        <ChevronRight
+          aria-hidden="true"
+          className="watcher-chevron"
+          size={17}
+        />
       </button>
       <button
         aria-label={`${watcher.name} 삭제`}

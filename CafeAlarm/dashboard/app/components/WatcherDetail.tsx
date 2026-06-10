@@ -123,15 +123,27 @@ export function WatcherDetail({
         icon={<CircleAlert aria-hidden="true" size={15} />}
         title="최근 오류"
       >
-        <div className="empty-state">
-          <span className="empty-icon">
-            <Check aria-hidden="true" size={16} />
-          </span>
-          <div>
-            <p>오류 없음</p>
-            <span>최근 실행이 정상적으로 완료되었습니다.</span>
+        {watcher.lastError ? (
+          <div className="empty-state error-state">
+            <span className="empty-icon error-icon">
+              <CircleAlert aria-hidden="true" size={16} />
+            </span>
+            <div>
+              <p>실행 오류</p>
+              <span>{watcher.lastError}</span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="empty-state">
+            <span className="empty-icon">
+              <Check aria-hidden="true" size={16} />
+            </span>
+            <div>
+              <p>오류 없음</p>
+              <span>최근 실행이 정상적으로 완료되었습니다.</span>
+            </div>
+          </div>
+        )}
       </DetailSection>
 
       <DetailSection

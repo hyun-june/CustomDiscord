@@ -19,6 +19,7 @@ const createWatcher = (id: string): Watcher => ({
   discordWebhookConfigured: true,
   discordWebhookMasked: "",
   enabled: true,
+  lastError: null,
 });
 
 test("selects the first remaining watcher when the selected watcher is deleted", () => {

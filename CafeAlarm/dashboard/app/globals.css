@@ -700,6 +700,19 @@ body {
   color: #247449;
 }
 
+.error-state {
+  border-color: #efcaca;
+}
+
+.error-icon {
+  background: #fceeee;
+  color: #c74343;
+}
+
+.error-state span {
+  overflow-wrap: anywhere;
+}
+
 .empty-state p,
 .empty-state span,
 .recent-alert p,
