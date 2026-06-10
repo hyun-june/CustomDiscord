@@ -2,7 +2,7 @@ const buildArticleUrl = (cafeId, articleId) => {
   return `https://cafe.naver.com/f-e/cafes/${cafeId}/articles/${articleId}`;
 };
 
-export const getCafeData = async (naverCafeUrl) => {
+export const fetchCafeData = async (naverCafeUrl) => {
   try {
     const response = await fetch(naverCafeUrl);
 

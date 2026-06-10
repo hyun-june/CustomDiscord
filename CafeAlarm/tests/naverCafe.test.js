@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { getCafeData } from "../src/naverCafe.js";
+import { fetchCafeData } from "../src/naverCafe.js";
 
 const originalFetch = globalThis.fetch;
 const originalConsoleError = console.error;
@@ -11,7 +11,7 @@ test.afterEach(() => {
   console.error = originalConsoleError;
 });
 
-test("getCafeData converts Naver Cafe API articles", async () => {
+test("fetchCafeData converts Naver Cafe API articles", async () => {
   const requestedUrls = [];
 
   globalThis.fetch = async (url) => {
@@ -38,7 +38,7 @@ test("getCafeData converts Naver Cafe API articles", async () => {
     };
   };
 
-  const articles = await getCafeData("https://naver.example/cafe");
+  const articles = await fetchCafeData("https://naver.example/cafe");
 
   assert.deepEqual(requestedUrls, ["https://naver.example/cafe"]);
   assert.deepEqual(articles, [
@@ -54,7 +54,7 @@ test("getCafeData converts Naver Cafe API articles", async () => {
   ]);
 });
 
-test("getCafeData rejects an unsuccessful HTTP response", async () => {
+test("fetchCafeData rejects an unsuccessful HTTP response", async () => {
   console.error = () => {};
   globalThis.fetch = async () => ({
     ok: false,
@@ -63,12 +63,12 @@ test("getCafeData rejects an unsuccessful HTTP response", async () => {
   });
 
   await assert.rejects(
-    getCafeData("https://naver.example/cafe"),
+    fetchCafeData("https://naver.example/cafe"),
     /Naver Cafe request failed: 500 Internal Server Error/,
   );
 });
 
-test("getCafeData rejects a response without articleList", async () => {
+test("fetchCafeData rejects a response without articleList", async () => {
   console.error = () => {};
   globalThis.fetch = async () => ({
     ok: true,
@@ -76,7 +76,7 @@ test("getCafeData rejects a response without articleList", async () => {
   });
 
   await assert.rejects(
-    getCafeData("https://naver.example/cafe"),
+    fetchCafeData("https://naver.example/cafe"),
     /does not include articleList/,
   );
 });
