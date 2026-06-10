@@ -1,20 +1,96 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { Topbar } from "./components/Topbar";
 import { WatcherDetail } from "./components/WatcherDetail";
 import { WatcherList } from "./components/WatcherList";
-import { watchers } from "./mocks/watchers";
 import { WatcherCreateForm } from "./components/WatcherCreateForm";
-import type { Watcher } from "./types/watcher";
+import type { ApiWatcher, CreateWatcherInput, Watcher } from "./types/watcher";
+import { mapWatcher } from "./mappers/watchMapper";
+import { removeWatcherFromList } from "./utils/watcherList";
 
 export default function Home() {
-  const [selectedWatcher, setSelectedWatcher] = useState(watchers[0]);
+  const [selectedWatcher, setSelectedWatcher] = useState<Watcher | null>(null);
   const [panelMode, setPanelMode] = useState("detail");
+  const [watcherList, setWatcherList] = useState<Watcher[]>([]);
+  const [loadError, setLoadError] = useState("");
+
+  useEffect(() => {
+    const loadWatchers = async () => {
+      try {
+        const response = await fetch("/api/watchers");
+
+        if (!response.ok) {
+          throw new Error("감시 대상 조회에 실패했습니다.");
+        }
+
+        const data: ApiWatcher[] = await response.json();
+        const mappedWatchers = data.map(mapWatcher);
+
+        setWatcherList(mappedWatchers);
+        setSelectedWatcher(mappedWatchers[0] ?? null);
+        setLoadError("");
+      } catch (error) {
+        console.error(error);
+        setLoadError("감시 대상 목록을 불러오지 못했습니다.");
+      }
+    };
+
+    loadWatchers();
+  }, []);
 
   const handleSelectWatcher = (watcher: Watcher) => {
     setSelectedWatcher(watcher);
     setPanelMode("detail");
+  };
+
+  const handleCreateWatcher = async (input: CreateWatcherInput) => {
+    const response = await fetch("/api/watchers", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => null);
+
+      throw new Error(
+        errorBody?.message ?? "감시 대상 생성에 실패했습니다.",
+      );
+    }
+
+    const createdWatcher = mapWatcher(await response.json());
+
+    setWatcherList((previous) => [createdWatcher, ...previous]);
+    setSelectedWatcher(createdWatcher);
+    setPanelMode("detail");
+  };
+
+  const handleDeleteWatcher = async (watcher: Watcher) => {
+    if (!window.confirm(`"${watcher.name}" 감시 대상을 삭제하시겠습니까?`)) {
+      return;
+    }
+
+    const response = await fetch(`/api/watchers/${watcher.id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => null);
+      window.alert(errorBody?.message ?? "감시 대상 삭제에 실패했습니다.");
+      return;
+    }
+
+    const nextState = removeWatcherFromList(
+      watcherList,
+      selectedWatcher,
+      watcher.id,
+    );
+
+    setWatcherList(nextState.watchers);
+    setSelectedWatcher(nextState.selectedWatcher);
   };
 
   return (
@@ -22,18 +98,31 @@ export default function Home() {
       <Topbar />
 
       <div className="workspace">
-        <Sidebar watcherCount={12} />
+        <Sidebar watcherCount={watcherList.length} />
         <WatcherList
           onCreateWatcher={() => setPanelMode("create")}
+          onDeleteWatcher={handleDeleteWatcher}
           onSelectWatcher={handleSelectWatcher}
-          selectedWatcherId={selectedWatcher.id}
-          watchers={watchers}
+          selectedWatcherId={selectedWatcher?.id}
+          watchers={watcherList}
         />
 
-        <WatcherDetail watcher={selectedWatcher} />
+        {loadError ? (
+          <aside className="detail-panel detail-empty-state">
+            <div>
+              <h2>목록을 불러오지 못했습니다.</h2>
+              <p>{loadError}</p>
+            </div>
+          </aside>
+        ) : (
+          <WatcherDetail watcher={selectedWatcher} />
+        )}
 
         {panelMode === "create" && (
-          <WatcherCreateForm onCancel={() => setPanelMode("detail")} />
+          <WatcherCreateForm
+            onCancel={() => setPanelMode("detail")}
+            onCreate={handleCreateWatcher}
+          />
         )}
       </div>
     </main>

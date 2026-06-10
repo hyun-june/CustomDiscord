@@ -11,11 +11,25 @@ import {
   ToggleRight,
   Wifi,
 } from "lucide-react";
-import { statusBadgeClasses, statusDotClasses } from "../mocks/watchers";
+import {
+  statusBadgeClasses,
+  statusDotClasses,
+} from "../constants/watcherStatus";
 import type { Watcher } from "../types/watcher";
 import { DetailRow } from "./DetailRow";
 
-export function WatcherDetail({ watcher }: { watcher: Watcher }) {
+export function WatcherDetail({ watcher }: { watcher: Watcher | null }) {
+  if (!watcher) {
+    return (
+      <aside className="detail-panel detail-empty-state">
+        <div>
+          <h2>감시 대상을 선택해주세요.</h2>
+          <p>목록에서 감시 대상을 선택하거나 새 대상을 등록할 수 있습니다.</p>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="detail-panel">
       <div className="detail-header">
@@ -65,15 +79,11 @@ export function WatcherDetail({ watcher }: { watcher: Watcher }) {
         title="연결 정보"
       >
         <div className="detail-group">
-          <DetailRow
-            label="네이버 카페"
-            mono
-            value="apis.naver.com/.../31719263"
-          />
+          <DetailRow label="네이버 카페" mono value={watcher.naverCafeUrl} />
           <DetailRow
             label="Discord 웹훅"
             mono
-            value="discord.com/.../1499••••••"
+            value={watcher.discordWebhookMasked}
           />
         </div>
       </DetailSection>

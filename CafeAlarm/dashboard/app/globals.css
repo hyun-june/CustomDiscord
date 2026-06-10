@@ -377,18 +377,49 @@ body {
   overflow-y: auto;
 }
 
+.list-empty-state,
+.detail-empty-state {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.list-empty-state {
+  flex-direction: column;
+  min-height: 180px;
+  padding: 24px;
+}
+
+.list-empty-state p,
+.detail-empty-state h2,
+.detail-empty-state p,
+.submit-error {
+  margin: 0;
+}
+
+.list-empty-state p,
+.detail-empty-state h2 {
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.list-empty-state span,
+.detail-empty-state p {
+  font-size: 10px;
+  margin-top: 6px;
+}
+
 .watcher-row {
-  align-items: flex-start;
   background: white;
   border: 0;
   border-bottom: 1px solid #edf0ee;
   color: inherit;
   display: flex;
-  gap: 11px;
   min-height: 105px;
-  padding: 17px 22px 16px 24px;
   position: relative;
-  text-align: left;
   width: 100%;
 }
 
@@ -410,7 +441,39 @@ body {
   width: 3px;
 }
 
-.watcher-row > .status-dot {
+.watcher-select-button {
+  align-items: flex-start;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  display: flex;
+  flex: 1;
+  gap: 11px;
+  min-width: 0;
+  padding: 17px 8px 16px 24px;
+  text-align: left;
+}
+
+.watcher-delete-button {
+  align-items: center;
+  align-self: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: #a0a8a3;
+  display: flex;
+  height: 30px;
+  justify-content: center;
+  margin-right: 14px;
+  width: 30px;
+}
+
+.watcher-delete-button:hover {
+  background: #fceeee;
+  color: #c74343;
+}
+
+.watcher-select-button > .status-dot {
   margin-top: 7px;
 }
 
@@ -813,6 +876,19 @@ body {
   gap: 8px;
 }
 
+.primary-button:disabled,
+.secondary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.submit-error {
+  color: #c74343;
+  font-size: 10px;
+  padding-top: 10px;
+  text-align: right;
+}
+
 @media (max-width: 600px) {
   .modal-backdrop {
     align-items: flex-end;
@@ -893,8 +969,11 @@ body {
     margin-right: 16px;
   }
 
-  .watcher-row {
+  .watcher-select-button {
     padding-left: 18px;
-    padding-right: 16px;
+  }
+
+  .watcher-delete-button {
+    margin-right: 8px;
   }
 }

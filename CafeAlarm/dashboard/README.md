@@ -1,5 +1,25 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment variables
+
+Copy `.env.example` to `.env` and provide the MongoDB URI and webhook
+encryption key. Generate the encryption key once and keep the same value for
+the dashboard and the worker:
+
+```bash
+node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
+```
+
+Discord webhook URLs are encrypted with AES-256-GCM before they are stored.
+Changing or losing `WEBHOOK_ENCRYPTION_KEY` makes existing webhook URLs
+impossible to decrypt.
+
+After adding the key, encrypt and remove any existing plaintext webhook URLs:
+
+```bash
+npm run migrate:webhooks
+```
+
 ## Getting Started
 
 First, run the development server:

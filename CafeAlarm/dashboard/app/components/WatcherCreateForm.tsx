@@ -9,28 +9,30 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { CreateWatcherInput } from "../types/watcher";
 
-type FormState = {
-  name: string;
-  naverCafeUrl: string;
-  discordWebhookUrl: string;
-  pollIntervalSeconds: number;
-};
+type FormErrors = Partial<Record<keyof CreateWatcherInput, string>>;
 
-type FormErrors = Partial<Record<keyof FormState, string>>;
-
-export function WatcherCreateForm({ onCancel }: { onCancel: () => void }) {
-  const [form, setForm] = useState<FormState>({
+export function WatcherCreateForm({
+  onCancel,
+  onCreate,
+}: {
+  onCancel: () => void;
+  onCreate: (input: CreateWatcherInput) => Promise<void>;
+}) {
+  const [form, setForm] = useState<CreateWatcherInput>({
     name: "",
     naverCafeUrl: "",
     discordWebhookUrl: "",
     pollIntervalSeconds: 60,
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const fieldName = name as keyof FormState;
+    const fieldName = name as keyof CreateWatcherInput;
 
     setForm((previous) => ({
       ...previous,
@@ -43,7 +45,7 @@ export function WatcherCreateForm({ onCancel }: { onCancel: () => void }) {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const nextErrors: FormErrors = {};
@@ -72,8 +74,19 @@ export function WatcherCreateForm({ onCancel }: { onCancel: () => void }) {
       return;
     }
 
-    console.log(form);
-    onCancel();
+    try {
+      setIsSubmitting(true);
+      setSubmitError("");
+      await onCreate(form);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "감시 대상 생성에 실패했습니다.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -158,9 +171,7 @@ export function WatcherCreateForm({ onCancel }: { onCancel: () => void }) {
                 <span className="input-unit">초</span>
               </span>
               {errors.pollIntervalSeconds && (
-                <span className="form-error">
-                  {errors.pollIntervalSeconds}
-                </span>
+                <span className="form-error">{errors.pollIntervalSeconds}</span>
               )}
             </label>
           </FormSection>
@@ -173,17 +184,23 @@ export function WatcherCreateForm({ onCancel }: { onCancel: () => void }) {
             <div className="modal-actions-right">
               <button
                 className="secondary-button"
+                disabled={isSubmitting}
                 onClick={onCancel}
                 type="button"
               >
                 취소
               </button>
-              <button className="primary-button" type="submit">
+              <button
+                className="primary-button"
+                disabled={isSubmitting}
+                type="submit"
+              >
                 <Save aria-hidden="true" size={16} />
-                감시 시작
+                {isSubmitting ? "등록 중..." : "감시 시작"}
               </button>
             </div>
           </div>
+          {submitError && <p className="submit-error">{submitError}</p>}
         </form>
       </section>
     </div>
