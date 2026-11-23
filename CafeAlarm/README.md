@@ -75,6 +75,16 @@ npm run dev
 
 Dashboard는 기본적으로 `http://localhost:3000`에서 실행됩니다.
 
+## 서버 없이 실행 (GitHub Actions)
+
+`.github/workflows/cafeAlarmCron.yml`이 5분마다 `node src/index.js --once`로 Worker를 한 번 실행합니다. `--once`는 실행 시점이 된 감시 대상을 한 번 처리하고 종료합니다.
+
+1. 저장소 Settings → Secrets and variables → Actions에 `MONGODB_URI`, `WEBHOOK_ENCRYPTION_KEY`를 등록합니다. Dashboard(Vercel)와 같은 값이어야 합니다.
+2. Actions 탭에서 `CafeAlarm Cron`을 수동 실행(Run workflow)해 동작을 확인합니다.
+
+- GitHub Actions 스케줄은 최소 5분이고, 실제 실행은 몇 분에서 수십 분까지 밀릴 수 있습니다.
+- 저장소에 60일간 활동이 없으면 스케줄이 자동으로 꺼집니다. Actions 탭에서 다시 켜면 됩니다.
+
 ## 테스트
 
 Worker:
