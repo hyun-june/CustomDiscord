@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: write # keepalive: 워크플로 재활성화용
 
 # 이전 실행이 아직 돌고 있으면 겹치지 않게 건너뜀 (중복 알림 방지)
 concurrency:
@@ -42,3 +43,11 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           WEBHOOK_ENCRYPTION_KEY: ${{ secrets.WEBHOOK_ENCRYPTION_KEY }}
+
+      # 저장소에 60일간 활동이 없으면 GitHub이 스케줄을 끄므로, 실행할 때마다 다시 활성화해 타이머를 초기화
+      - name: Keep schedule alive
+        if: always()
+        continue-on-error: true
+        run: gh workflow enable cafeAlarmCron.yml --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}

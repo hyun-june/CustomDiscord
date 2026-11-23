@@ -83,7 +83,7 @@ Dashboard는 기본적으로 `http://localhost:3000`에서 실행됩니다.
 2. Actions 탭에서 `CafeAlarm Cron`을 수동 실행(Run workflow)해 동작을 확인합니다.
 
 - GitHub Actions 스케줄은 최소 5분이고, 실제 실행은 몇 분에서 수십 분까지 밀릴 수 있습니다.
-- 저장소에 60일간 활동이 없으면 스케줄이 자동으로 꺼집니다. Actions 탭에서 다시 켜면 됩니다.
+- 저장소에 60일간 활동이 없으면 GitHub이 스케줄을 끄지만, 워크플로가 실행될 때마다 자기 자신을 다시 활성화(`gh workflow enable`)해 타이머를 초기화합니다.
 
 ## 테스트
 
