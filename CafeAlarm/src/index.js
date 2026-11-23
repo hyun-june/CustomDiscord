@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { connectMongoDB } from "./mongodb.js";
 import { runWatcher } from "./runWatcher.js";
 import {
@@ -31,6 +32,13 @@ const sleep = (milliseconds) => {
 };
 
 const start = async () => {
+  // GitHub Actions cron처럼 외부 스케줄러가 깨우는 경우: 한 번만 돌고 종료
+  if (process.argv.includes("--once")) {
+    await main();
+    await mongoose.disconnect();
+    return;
+  }
+
   while (true) {
     await main();
     await sleep(SCHEDULER_TICK_MS);
